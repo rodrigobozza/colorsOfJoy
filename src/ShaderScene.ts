@@ -76,7 +76,7 @@ export default class ShaderScene extends Phaser.Scene {
     }
 
     preload() {
-	this.load.image('jester', '../assets/sprites/jester.png');
+	this.load.image('jester', '../assets/sprites/image.png');
     }
 
     create() {
@@ -105,9 +105,9 @@ export default class ShaderScene extends Phaser.Scene {
 						       hue: { type: '1f', value: 0.0 }
 						   });
 	
-	this.shaderReference = this.add.shader(base, 128, 128, 256, 256, ['jester']);
-	this.shaderReference.setUniform('resolution.value.x', 256);
-	this.shaderReference.setUniform('resolution.value.y', 256);
+	this.shaderReference = this.add.shader(base, 512, 512, 1024, 1024, ['jester']);
+	this.shaderReference.setUniform('resolution.value.x', 1024);
+	this.shaderReference.setUniform('resolution.value.y', 1024);
 	this.resetHues();
 
 	console.log(this.shaderReference);
