@@ -8,12 +8,31 @@ export default class PlayerController{
     private sprite: Phaser.Physics.Matter.Sprite
     private cursors: CursorKeys
     private stateMachine: StateMachine
+    private soundEffects: Phaser.Sound.HTML5AudioSound[]
 
     private actionReady = false
 
-    constructor(sprite : Phaser.Physics.Matter.Sprite, cursors: CursorKeys){
+    private timedEvent: Phaser.Time.TimerEvent
+
+    constructor(sprite : Phaser.Physics.Matter.Sprite, cursors: CursorKeys, soundEffects: Phaser.Sound.HTML5AudioSound[]){
         this.sprite = sprite
         this.cursors = cursors
+        this.soundEffects = soundEffects
+        this.timedEvent
+
+        /*
+        this.soundEffects.push(this.sound.add('jumpSound')) // 0
+        this.soundEffects.push(this.sound.add('walkSound')) // 1
+        this.soundEffects.push(this.sound.add('gotHitSound')) // 2
+        this.soundEffects.push(this.sound.add('grimaceSound')) // 3
+        this.soundEffects.push(this.sound.add('deadSound')) // 4
+        this.soundEffects.push(this.sound.add('shotSound')) // 5
+        this.soundEffects.push(this.sound.add('shotHitSound')) // 6
+        this.soundEffects.push(this.sound.add('madeLaughSound')) // 7
+        */
+
+        this.soundEffects[1].loop = true
+
 
         this.createAnimations()
 
@@ -73,6 +92,7 @@ export default class PlayerController{
                 case 'monster':
                     events.emit('got-hit')
                     sprite.destroy()
+                    this.soundEffects[2].play()
                     break
             }
 
@@ -99,6 +119,7 @@ export default class PlayerController{
             this.stateMachine.setState('walk')
         }
 
+        //if(this.cursors.space.isDown){
         const actionJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.space)
         if (actionJustPressed){
             this.stateMachine.setState('action')
@@ -112,6 +133,7 @@ export default class PlayerController{
 
     private walkOnEnter(){
         this.sprite.play('player-walk')
+        this.soundEffects[1].play()
     }
 
     private walkOnUpdate(){
@@ -128,6 +150,7 @@ export default class PlayerController{
             this.stateMachine.setState('idle')
         }
 
+        //if(this.cursors.space.isDown){
         const actionJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.space)
         if (actionJustPressed){
             this.stateMachine.setState('action')
@@ -141,11 +164,14 @@ export default class PlayerController{
 
     private walkOnExit(){
         this.sprite.stop()
+        this.soundEffects[1].stop()
     }
 
     private jumpOnEnter(){
         if(this.stateMachine.previousStateName!='action'){
             this.sprite.setVelocityY(-15)
+            this.soundEffects[0].play()
+            this.sprite.play('player-grimace')
         }
     }
 
@@ -168,11 +194,8 @@ export default class PlayerController{
 
     private actionOnEnter(){
         if(this.actionReady){
-            //this.sprite.play('player-action')
-            //this.actionReady = false
-            console.log('Action triggered')
-            //console.log(this.stateMachine.previousStateName)
-            
+            this.sprite.play('player-grimace')
+            this.soundEffects[3].play()
         } else {
             //Not ready yet
         }
@@ -189,6 +212,7 @@ export default class PlayerController{
 
     private deadOnEnter(){
         //this.sprite.play('player-dead')
+        this.soundEffects[4].play()
         console.log("Player is dead!!")
     }
 
@@ -237,6 +261,12 @@ export default class PlayerController{
 
             }),
             repeat: -1
+        })
+
+        this.sprite.anims.create({
+            key: 'player-grimace',
+            frames: [{ key:'jester',frame: 'bugabuga.png' }]
+            
         })
 
     }
