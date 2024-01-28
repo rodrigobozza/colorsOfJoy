@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import PlayerController from './PlayerController'
+import Key from '../Key'
 
 export default class Game extends Phaser.Scene{
 
@@ -10,6 +11,10 @@ export default class Game extends Phaser.Scene{
 
     constructor(config: Phaser.Types.Core.GameConfig){
         super('game')
+	this.cam2 = 0;
+	this.keys;
+	this.hues;
+//	this.shader = new SadnessFX(this.game);
     }
 
     init(){
@@ -27,9 +32,24 @@ export default class Game extends Phaser.Scene{
     }
 
     create(){
-        this.scene.launch('ui')
-        this.cameras.main.setBounds(0, 0, undefined, undefined, true);   
+	this.keys = new Array(6);
+        this.keys[0] = new Key(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE));
+	this.keys[1] = new Key(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO));
+	this.keys[2] = new Key(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE));
+	this.keys[3] = new Key(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR));
+	this.keys[4] = new Key(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FIVE));
+	this.keys[5] = new Key(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SIX));
 
+	this.hues = new Array(6);
+	for(var i = 0; i < 6; ++i)
+	    this.hues[i] = 0.0;
+	
+        this.scene.launch('ui')
+        this.cameras.main.setBounds(0, 0, undefined, undefined, true);
+	this.cameras.main.setPostPipeline('sad');
+
+        this.cam2 = this.cameras.add(this.cameras.main.x, this.cameras.main.y, 1024, 1024);
+        this.cam2.setBounds(0, 0, undefined, undefined, true);
         const map = this.make.tilemap({ key: 'tilemap'})
         const tileset = map.addTilesetImage('iceworld', 'tiles')
         const ground = map.createLayer('ground', tileset)
@@ -41,13 +61,14 @@ export default class Game extends Phaser.Scene{
 
             switch(name){
                 case 'player-spawn':{
-                    this.jester = this.matter.add.sprite(x + (width * 0.5), y, 'jester')
-                        .setFixedRotation()
+                    this.jester = this.matter.add.sprite(x + (width * 0.5), y, 'jester').setFixedRotation()
+		    //this.jester.setPipeline('sad')
 
                     this.playerController = new PlayerController(this.jester, this.cursors)
         
                     this.cameras.main.startFollow(this.jester, undefined, undefined, undefined, undefined, 150)
 
+		    
                     break;
                 }
                 case 'star':{
@@ -69,6 +90,10 @@ export default class Game extends Phaser.Scene{
         })
 
         this.matter.world.convertTilemapLayer(ground)
+        this.cameras.main.ignore(this.jester);
+	this.cam2.ignore(ground);
+	this.cam2.startFollow(this.jester, undefined, undefined, undefined, undefined, 150);
+
     }
 
     update(t: number, dt: number ){
@@ -76,8 +101,28 @@ export default class Game extends Phaser.Scene{
             return
         }
         
-        this.playerController.update(dt)
+        this.playerController.update(dt);
+
+	for(var i = 0; i < 6; ++i) {
+	    this.keys[i].update();
+
+	    if(this.keys[i].isPressed()) {
+		this.hues[i] = this.hues[i] > 0.0 ? 0.0 : 1.0;
+	    }
+	}
+
+	this.resetHues();
+	
     }
 
+    resetHues() {
+	let shaderReference: SadnessPipeline = this.cameras.main.getPostPipeline('sad');
+	shaderReference.h1f = this.hues[0];
+	shaderReference.h2f = this.hues[1];
+	shaderReference.h3f = this.hues[2];
+	shaderReference.h4f = this.hues[3];
+	shaderReference.h5f = this.hues[4];
+	shaderReference.h6f = this.hues[5];
+    }
 
 }
