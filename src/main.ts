@@ -13,7 +13,7 @@ const config: Phaser.Types.Core.GameConfig = {
 	height: 1024,
 	physics: {
 		default: 'matter',
-                matter: { debug: true }
+                matter: { debug: false }
 		},
 	scene: [Game,UI]
 }

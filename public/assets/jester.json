@@ -17,7 +17,7 @@
 	"sourceSize": {"w":154,"h":205}
 },
 {
-	"filename": "iddle_1.png",
+	"filename": "bugabuga.png",
 	"frame": {"x":308,"y":0,"w":154,"h":205},
 	"rotated": false,
 	"trimmed": false,
@@ -25,7 +25,7 @@
 	"sourceSize": {"w":154,"h":205}
 },
 {
-	"filename": "iddle_2.png",
+	"filename": "iddle_1.png",
 	"frame": {"x":462,"y":0,"w":154,"h":205},
 	"rotated": false,
 	"trimmed": false,
@@ -33,8 +33,16 @@
 	"sourceSize": {"w":154,"h":205}
 },
 {
-	"filename": "iddle_3.png",
+	"filename": "iddle_2.png",
 	"frame": {"x":616,"y":0,"w":154,"h":205},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":154,"h":205},
+	"sourceSize": {"w":154,"h":205}
+},
+{
+	"filename": "iddle_3.png",
+	"frame": {"x":770,"y":0,"w":154,"h":205},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":154,"h":205},
@@ -45,8 +53,8 @@
 	"version": "1.0",
 	"image": "jester.png",
 	"format": "RGBA8888",
-	"size": {"w":770,"h":205},
+	"size": {"w":924,"h":205},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:b1f60777c87de3017aba7f8ff62b03a2:ea5f6d5e879e8870efc757d916b3ad06:8893b901d6ddc116236f0b54143e8a57$"
+	"smartupdate": "$TexturePacker:SmartUpdate:142e754e850c7c68e51ac215b02210f6:f597c67e014fb2255ec9ae0a3483fd22:8893b901d6ddc116236f0b54143e8a57$"
 }
 }
