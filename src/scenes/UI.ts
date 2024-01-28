@@ -18,6 +18,9 @@ export default class UI extends Phaser.Scene{
         this.lifes = 2
     }
 
+    preload(){
+    }
+
     create(){
 
         this.starLabel = this.add.text(10, 10, 'Score: 0',{

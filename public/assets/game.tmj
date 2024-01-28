@@ -1,4 +1,12 @@
 { "compressionlevel":-1,
+ "editorsettings":
+    {
+     "export":
+        {
+         "format":"json",
+         "target":"game.json"
+        }
+    },
  "height":55,
  "infinite":false,
  "layers":[
@@ -336,17 +344,6 @@
                  "width":68,
                  "x":452,
                  "y":3432
-                }, 
-                {
-                 "height":80,
-                 "id":8,
-                 "name":"star",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":80,
-                 "x":3648,
-                 "y":3324
                 }, 
                 {
                  "height":96,
